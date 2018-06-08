@@ -1,0 +1,279 @@
+****************************************************************
+Useful Tips for Good Vimming
+Author: 3dsekai
+License: GNU General Public License
+https://www.gnu.org/licenses/gpl-3.0.txt
+****************************************************************
+
+Useful websites:
+http://www.vim.org/
+http://vim.wikia.com/wiki/Vim_Tips_Wiki
+https://vim.rtorr.com/
+
+*IMPORTANT*
+Some of the key-bindings listed in this document may only be
+valid for the Windows version of GVim!
+
+---------------------------------------------------------------
+Text Editing
+---------------------------------------------------------------
+dd:	Deletes current line and puts it in the internal buffer (must be in normal mode)
+yy:	Copies the current line into the internal buffer
+cc:	Clears a line and enters insert mode. Starts at current insert level.
+
+-- Copy/paste selected lines of text --
+normal mode:
+"*y: copies the selected text and puts in in the clipboard
+"*p: pastes the text from the global clipboard
+
+explanation:
+": use register for next delete, yank or put
+*: global clipboard
+y: yank
+
+-- Copy all contents of a document --
+:%y*:	Copy all the contents of the document and put in the clipboard.
+*note*	Putting items in the clipboard allows you to copy them outside of Vim.
+
+explanation:
+%:		Refers the next command to work on all the lines
+y:		To yank the lines
+* (also +):	Copies the lines to the system clipboard
+
+-- Delete text w/o copying to clipboard or buffer --
+"_d: called the "blackhole register". deletes the selected text without copying to clipboard or buffer
+"_dd: deletes current line into the blackhole register
+
+-- Select all contents of documents --
+ggVG: 			Selects all the contents of a document
+
+explanation:
+gg: 			Sets the cursor to the very beginning of the document
+V (shift-v):		Goes into block visual mode.
+G [count](shift-g):	Goto line. Default is the last line.
+*note: 			Use 'p' to replace the selected text with the contents
+			saved in the internal buffer.
+
+-- Select columns of text --
+v-shift: 	Go into block visual mode. select one character at a time
+shift-ctrl-q: 	Use this to select columns of text.
+
+-- Open a new line --
+o: open a new line below the current line
+O: open a new line above the current line
+
+-- Search and Replace --
+:%s/old/new/g[c]:	searches for all cases of 'old' and replaces it with 'new'
+
+explanation:
+%s:			% means throught the buffer, s is substitute.
+			this command means "substitute throught entire buffer (document)".
+/old/:			the current text to be replaced
+/new/:			the new text to replace the old text with
+g:			the global option. It replaces every occurrence on every line
+c:			the confirmation option. Vim asks for confirmation before replacing.
+			this is optional.
+
+---------------------------------------------------------------
+Navigating Windows
+---------------------------------------------------------------
+ctrl-ww: Navigate between the split windows (have to tap w twice)
+ctrl-e: Move down one line at a time
+
+---------------------------------------------------------------
+File Exploration
+---------------------------------------------------------------	
+:[N]Explore[!]  [dir]... Explore directory of current file      *:Explore*
+:[N]Hexplore[!] [dir]... Horizontal Split & Explore             *:Hexplore*
+:[N]Lexplore[!] [dir]... Left Explorer Toggle                   *:Lexplore*
+:[N]Sexplore[!] [dir]... Split&Explore current file's directory *:Sexplore*
+:[N]Vexplore[!] [dir]... Vertical   Split & Explore             *:Vexplore*
+:Texplore       [dir]... Tab & Explore                          *:Texplore*
+:Rexplore            ... Return to/from Explorer                *:Rexplore*Navigating Windows
+
+---------------------------------------------------------------
+Grepping in Vim
+---------------------------------------------------------------
+http://vim.wikia.com/wiki/Find_in_files_within_Vim
+
+syntax:
+:vim[grep][!] /{pattern}/[g][j] {file}...
+
+explanation:
+vimgrep: Vim's internal grep command
+
+!: any changes in the current buffer are abandoned
+
+/pattern/: the pattern to search for (for example, "foo" or "bar")
+
+g: without g, a match is added only once per line
+
+j: without j, Vim jumps to the first match
+
+file: the directory and file to search in
+
+**: search directory recursively (search all files in all folders contained within the directory)
+
+*: search all files (example: *.c search all '.c' files)
+
+example:
+:vimgrep /3dsekai is Awesome/g ../**/*
+
+^^ search the parent directory for "3dsekai is Awesome" in all files recursively.
+
+*note: the list of matches is contained in the quickfix list.
+
+---------------------------------------------------------------
+Display quickfix list:
+---------------------------------------------------------------
+syntax:
+:cw
+
+explanation:
+The quickfix list displays all the lines of code that have been grepped.
+ 
+---------------------------------------------------------------
+Set working directory to current file
+---------------------------------------------------------------
+http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file
+
+syntax:
+:lcd %:p:h
+
+explanation:
+:lcd: sets the current directory for the current window
+
+%: gives the name of the current file
+
+%:p: gives its full path
+
+%:p:h: gives the head of the full path
+
+---------------------------------------------------------------
+Tabs
+---------------------------------------------------------------
+http://vim.wikia.com/wiki/Using_tab_pages
+https://joshldavis.com/2014/04/05/vim-tab-madness-buffers-vs-tabs/
+
+command mode:
+:tabs:		list the tab pages and the windows they contain
+
+:tabnew:	open new tab
+
+:tabfirst:	jump to first tab
+
+:tablast:	jump to last tab
+
+:tabm [number]:	move the current tab to the position denoted by number
+
+:tabs:		displays all tabs and their numbers
+
+:tab split:     copy the current window to a new tab of its own
+
+:tabp:		move back one tab
+
+:tabn:		move forward one tab 
+
+normal mode:
+ctrl-page up:	move back one tab
+
+ctr-page down:	move forward one tab
+
+---------------------------------------------------------------
+Saving/Opening sessions
+https://stackoverflow.com/questions/1642611/how-to-save-and-restore-multiple-different-sessions-in-vim#1642641
+---------------------------------------------------------------
+
+save a current editing session:
+
+syntax:
+:mksession[!] [file]
+
+example:
+:mksession ~/3dsekai_secret_stuff/secret_session.vim
+
+explanation:
+mksession: Write a Vim script that restores the current editing session. 
+	   When [!] is included an existing file is overwritten.
+
+open an editing session
+
+syntax:
+:source [file]
+
+example
+:source ~/3dsekai_secret_stuff/secret_session.vim
+
+explanation:
+source: Read Vim commands from [file].
+
+---------------------------------------------------------------
+Ctags
+---------------------------------------------------------------
+The ctags programs generate an index (or "tag") file for a variety of language objects found in file(s).
+This tag file allows these items to be quickly and easily located by vim.
+It works similar to the way that "Go To Definition" does in Visual Studio.
+
+helpful links:
+https://andrew.stwrt.ca/posts/vim-ctags/
+http://ctags.sourceforge.net/ctags.html#HOW%20TO%20USE%20WITH%20VI
+http://vim.wikia.com/wiki/Browsing_programs_with_tags
+
+SETUP
+
+1.
+Follow user "Ger"'s instructions to install ctags on Windows
+https://stackoverflow.com/questions/745560/installing-exuberant-ctags-on-windows-vista-and-xp#2631441
+
+2.
+Create the tags file in the top directory of your code base.
+
+Example code base directory: "C:\Users\3dsekai\Documents\code"
+
+You create the tags file in the terminal with this command:
+ctags -R "C:\Users\3dsekai\Documents\code"
+(-R means recursively include all files in all folders in this directory)
+
+3.
+When starting vim, tell vim where to find your tag file with this command:
+set tags=tags,./tags
+
+This command searches first in the currenty directory,
+then in the directory of the currently open file.
+https://stackoverflow.com/questions/5017500/vim-difficulty-setting-up-ctags-source-in-subdirectories-dont-see-tags-file-i
+
+
+Taglists
+
+The "Tag List" plugin is a source code browser plugin for Vim. This plugin
+allows you to efficiently browse through source code files for different
+programming languages. It opens a window that lists the functions, variables,
+macros, etc of the classes in your project. It only works with
+exuberant ctags installed.
+
+helpful links:
+http://vim-taglist.sourceforge.net/index.html
+https://aufather.wordpress.com/2010/09/01/taglist-in-vim/
+
+
+INSTALL
+
+1.
+Download files:
+https://www.vim.org/scripts/script.php?script_id=273
+
+2.
+Transfer this file:
+taglist_46\doc
+taglist.txt
+
+To this folder:
+$HOME\vimfiles\doc
+
+Transfer this file:
+taglist_46\plugin
+taglist.vim
+
+To this folder:
+$HOME\vimfiles\plugin
+

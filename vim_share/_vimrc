@@ -33,11 +33,6 @@ function MyDiff()
 endfunction
 
 " ---------------------------------------------
-" display number lines
-" ---------------------------------------------
-set number
-
-" ---------------------------------------------
 " Set the font to Lucida Console
 " ---------------------------------------------
 "if has('gui_running')
@@ -100,6 +95,10 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
+" ---------------------------------------------
+" display number lines
+" ---------------------------------------------
+set number
 
 " ---------------------------------------------
 " 
@@ -140,10 +139,11 @@ colorscheme dracula
 
 " ---------------------------------------------
 "
-" NERDTress File highlighting
-" https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
+" NERDTree Plugin Settings
 "
 " ---------------------------------------------
+" NERDTress File highlighting
+" https://github.com/scrooloose/nerdtree/issues/433#issuecomment-92590696
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
  exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
  exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
@@ -155,6 +155,37 @@ call NERDTreeHighlightFile('h', 'LightRed', 'none', 'LightRed', '#282a36')
 call NERDTreeHighlightFile('vert', 'Yellow', 'none', 'Yellow', '#282a36')
 call NERDTreeHighlightFile('frag', 'Cyan', 'none', 'Cyan', '#282a36')
 call NERDTreeHighlightFile('txt', 'LightMagenta', 'none', 'LightMagenta', '#282a36')
+
+" toggle nerdtree on/off with f2
+nnoremap <silent> <F2> :NERDTreeToggle<CR>
+" ---------------------------------------------
+"
+" Exuberant ctags settings
+"
+" ---------------------------------------------
+" when there are more than one defintions for a
+" function, remap the jump key to list them all
+" so I can choose the correct one.
+nnoremap <C-]> g<C-]>
+
+" ---------------------------------------------
+"
+" Taglist plugin settings
+"
+" ---------------------------------------------
+let Tlist_Close_On_Select = 1 "close taglist window once we selected something
+let Tlist_Exit_OnlyWindow = 1 "if taglist window is the only window left, exit vim
+let Tlist_Auto_Highlight_Tag = 1 "Automatically highlight the current tag in the taglist.
+let Tlist_Auto_Update = 1 "Automatically update the taglist to include newly edited files.
+let Tlist_Close_On_Select = 1 "Close the taglist window when a file or tag is selected.
+let Tlist_Show_One_File = 1 "Show tags for the only one file.
+let Tlist_Inc_Winwidth = 1 "Increase the Vim window width to accommodate the taglist window
+let Tlist_Display_Prototype = 1 "display full prototype instead of just function name
+let Tlist_Process_File_Always = 1 "even without taglist window, create tags file, required for displaying tag in statusline
+let Tlist_GainFocus_On_ToggleOpen = 1 "automatically switch to taglist window
+
+" remap the taglist toggle command to F8
+nnoremap <silent> <F3> :TlistToggle<CR>
 
 " ---------------------------------------------
 "
@@ -189,3 +220,10 @@ set listchars=tab:>-,space:·,trail:·
 " ---------------------------------------------
 set nobackup	"don't create a document backup
 set noundofile	"don't create unto file for document
+
+" ---------------------------------------------
+"
+" maximize gvim window on start up for Windows
+"
+" ---------------------------------------------
+autocmd GUIEnter * simalt ~x
