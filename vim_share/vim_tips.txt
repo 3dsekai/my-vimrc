@@ -234,6 +234,9 @@ You create the tags file in the terminal with this command:
 ctags -R "C:\Users\3dsekai\Documents\code"
 (-R means recursively include all files in all folders in this directory)
 
+*note: the file is generated in the current directory of the cmd line.
+to generate the file in your desired path, you must be inside that directory.
+
 3.
 When starting vim, tell vim where to find your tag file with this command:
 set tags=tags,./tags
